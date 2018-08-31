@@ -16,7 +16,7 @@ import java.io.*;
 
 
 @Controller
-public class QRTools {
+public class QRController {
 
     private static final int QR_WIDTH = 300;
     private static final int QR_HEIGHT = 300;
@@ -56,9 +56,11 @@ public class QRTools {
             /*File file = new File(realPath, fileName);*/
             File file = new File(fileUrl);
             if (file.exists()) {
-                httpServletResponse.setContentType("application/force-download");// 设置强制下载不打开
-                httpServletResponse.addHeader("Content-Disposition",
-                        "attachment;fileName=" + QR_FILE_NAME);// 设置文件名
+                //httpServletResponse.setContentType("application/force-download");// 设置强制下载不打开
+                //httpServletResponse.addHeader("Content-Disposition",
+                //        "attachment;fileName=" + QR_FILE_NAME);// 设置文件名
+                httpServletResponse.setContentType("image/png");
+
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
