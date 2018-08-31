@@ -3,7 +3,6 @@ package ai.wo.dev;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.LocaleResolver;
@@ -16,6 +15,7 @@ import javax.servlet.Filter;
 import java.util.Locale;
 
 @SpringBootApplication
+@PropertySource("classpath:application.properties")
 public class App extends WebMvcConfigurerAdapter {
 	// 用于处理编码问题
 	@Bean
