@@ -82,16 +82,6 @@ public class QrUtil {
             // Load QR image
             BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix, getMatrixConfig());
 
-            // Load logo image
-            BufferedImage overly = getOverly(logo);
-
-            int overlyWidth = (int) (overly.getWidth() * caculateLogoScale(qrImage, overly));
-            int overlyHeight = (int) (overly.getHeight() * caculateLogoScale(qrImage, overly));
-
-            // Calculate the delta height and width between QR code and logo
-            int deltaHeight = qrImage.getHeight() - overlyHeight;
-            int deltaWidth = qrImage.getWidth() - overlyWidth;
-
             // Initialize combined image
             BufferedImage combined = new BufferedImage(qrImage.getHeight(), qrImage.getWidth(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = (Graphics2D) combined.getGraphics();
@@ -100,19 +90,36 @@ public class QrUtil {
             g.drawImage(qrImage, 0, 0, null);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
+            try {
+                // Load logo image
+                BufferedImage overly = getOverly(logo);
+
+                if (overly == null) {
+                    int overlyWidth = (int) (overly.getWidth() * caculateLogoScale(qrImage, overly));
+                    int overlyHeight = (int) (overly.getHeight() * caculateLogoScale(qrImage, overly));
+
+                    // Calculate the delta height and width between QR code and logo
+                    int deltaHeight = qrImage.getHeight() - overlyHeight;
+                    int deltaWidth = qrImage.getWidth() - overlyWidth;
+
+
+
 //            int logoWidth = (int) (qrImage.getWidth() * 0.75 * 0.25);
 //            int logoHeight = (int) (qrImage.getHeight() * 0.75 * 0.25);
 //
 //            g.setColor(Color.RED);
 //            g.drawRect((qrImage.getWidth() - logoWidth) / 2, (qrImage.getHeight() - logoHeight) / 2, logoWidth, logoHeight);
 
-            // Write logo into combine image at position (deltaWidth / 2) and
-            // (deltaHeight / 2). Background: Left/Right and Top/Bottom must be
-            // the same space for the logo to be centered
-            //g.drawImage(overly, (int) Math.round((qrImage.getWidth() - overly.getWidth() * caculateLogoScale(qrImage, overly) / 2) / 2), (int) Math.round(deltaHeight / 2), overly.getWidth() / 2, overly.getHeight() / 2, null);
-            g.drawImage(overly, (int) Math.round(deltaWidth / 2), (int) Math.round(deltaHeight / 2), overlyWidth, overlyHeight, null);
+                    // Write logo into combine image at position (deltaWidth / 2) and
+                    // (deltaHeight / 2). Background: Left/Right and Top/Bottom must be
+                    // the same space for the logo to be centered
+                    //g.drawImage(overly, (int) Math.round((qrImage.getWidth() - overly.getWidth() * caculateLogoScale(qrImage, overly) / 2) / 2), (int) Math.round(deltaHeight / 2), overly.getWidth() / 2, overly.getHeight() / 2, null);
+                    g.drawImage(overly, (int) Math.round(deltaWidth / 2), (int) Math.round(deltaHeight / 2), overlyWidth, overlyHeight, null);
+                }
 
+            }catch(IOException ioe){
 
+            }
             // Write label into combine image at position
             if (label != null) {
                 g.setColor(Color.black);
