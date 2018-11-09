@@ -63,6 +63,18 @@ public class QrUtil {
     //private final static int WIDTH = 300;
     //private final static int HEIGHT = 300;
 
+    private static boolean isNull(String v){
+        if(v == null){
+            return true;
+        }
+        if(v.trim().equalsIgnoreCase("")){
+            return true;
+        }
+        if(v.trim().equalsIgnoreCase("null")) {
+            return true;
+        }
+        return false;
+    }
     public static String generate(String content, String label, String logo, int width, int height) {
         // Create new configuration that specifies the error correction
         Map<EncodeHintType, ErrorCorrectionLevel> hints = new HashMap<>();
@@ -91,17 +103,17 @@ public class QrUtil {
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
             try {
-                // Load logo image
-                BufferedImage overly = getOverly(logo);
+                if (!isNull(logo)) {
+                    // Load logo image
+                    BufferedImage overly = getOverly(logo);
 
-                if (overly == null) {
-                    int overlyWidth = (int) (overly.getWidth() * caculateLogoScale(qrImage, overly));
-                    int overlyHeight = (int) (overly.getHeight() * caculateLogoScale(qrImage, overly));
+                    if (overly == null) {
+                        int overlyWidth = (int) (overly.getWidth() * caculateLogoScale(qrImage, overly));
+                        int overlyHeight = (int) (overly.getHeight() * caculateLogoScale(qrImage, overly));
 
-                    // Calculate the delta height and width between QR code and logo
-                    int deltaHeight = qrImage.getHeight() - overlyHeight;
-                    int deltaWidth = qrImage.getWidth() - overlyWidth;
-
+                        // Calculate the delta height and width between QR code and logo
+                        int deltaHeight = qrImage.getHeight() - overlyHeight;
+                        int deltaWidth = qrImage.getWidth() - overlyWidth;
 
 
 //            int logoWidth = (int) (qrImage.getWidth() * 0.75 * 0.25);
@@ -110,14 +122,15 @@ public class QrUtil {
 //            g.setColor(Color.RED);
 //            g.drawRect((qrImage.getWidth() - logoWidth) / 2, (qrImage.getHeight() - logoHeight) / 2, logoWidth, logoHeight);
 
-                    // Write logo into combine image at position (deltaWidth / 2) and
-                    // (deltaHeight / 2). Background: Left/Right and Top/Bottom must be
-                    // the same space for the logo to be centered
-                    //g.drawImage(overly, (int) Math.round((qrImage.getWidth() - overly.getWidth() * caculateLogoScale(qrImage, overly) / 2) / 2), (int) Math.round(deltaHeight / 2), overly.getWidth() / 2, overly.getHeight() / 2, null);
-                    g.drawImage(overly, (int) Math.round(deltaWidth / 2), (int) Math.round(deltaHeight / 2), overlyWidth, overlyHeight, null);
+                        // Write logo into combine image at position (deltaWidth / 2) and
+                        // (deltaHeight / 2). Background: Left/Right and Top/Bottom must be
+                        // the same space for the logo to be centered
+                        //g.drawImage(overly, (int) Math.round((qrImage.getWidth() - overly.getWidth() * caculateLogoScale(qrImage, overly) / 2) / 2), (int) Math.round(deltaHeight / 2), overly.getWidth() / 2, overly.getHeight() / 2, null);
+                        g.drawImage(overly, (int) Math.round(deltaWidth / 2), (int) Math.round(deltaHeight / 2), overlyWidth, overlyHeight, null);
+                    }
                 }
 
-            }catch(IOException ioe){
+            } catch (IOException ioe) {
 
             }
             // Write label into combine image at position
@@ -212,6 +225,6 @@ public class QrUtil {
     }
 
     public static void main(String[] args) {
-        generate("hello", "123", "http://cms-bucket.nosdn.127.net/2018/05/31/c195074ad9f04c68bea4a46b58b11079.png?imageView&thumbnail=90y90&quality=85",500,500);
+        generate("hello", "123", "http://cms-bucket.nosdn.127.net/2018/05/31/c195074ad9f04c68bea4a46b58b11079.png?imageView&thumbnail=90y90&quality=85", 500, 500);
     }
 }
