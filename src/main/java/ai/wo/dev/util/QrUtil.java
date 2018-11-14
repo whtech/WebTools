@@ -107,7 +107,7 @@ public class QrUtil {
                     // Load logo image
                     BufferedImage overly = getOverly(logo);
 
-                    if (overly == null) {
+                    if (overly != null) {
                         int overlyWidth = (int) (overly.getWidth() * caculateLogoScale(qrImage, overly));
                         int overlyHeight = (int) (overly.getHeight() * caculateLogoScale(qrImage, overly));
 
